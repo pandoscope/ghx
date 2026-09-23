@@ -5,7 +5,7 @@
       "source": "frankify-app/skills",
       "sourceType": "github",
       "skillPath": "derived/caveman/SKILL.md",
-      "computedHash": "30b52226790cba1d0ab173e16af901002d43e76bc02ca47d47ec67be76984e83"
+      "computedHash": "2928bc99f67a040115f7fa0f0b31ff8d19df4f55ef1e0e5e99e2dbaa72f87346"
     },
     "documenting-decisions": {
       "source": "frankify-app/skills",
@@ -23,25 +23,25 @@
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/productivity/grill-me/SKILL.md",
-      "computedHash": "f321507f77702a54af1db66549ec1685fc625390d06c57d7949cdcda8eb1b5c7"
+      "computedHash": "9cdbb4b8f7a3aeaef82e6230c9e823500d4a8a1214c726cf342cf9829d34fc7d"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "skillPath": "skills/engineering/grill-with-docs/SKILL.md",
-      "computedHash": "e7ef25bbee50cda2eb7b3a8ef541db0a0396dad7d369f7d14fb610671dd1864b"
+      "computedHash": "35e62aa423aaeab6a414bcac273f56dfb17802ef2334b41b6a3b00f28196c8cf"
     },
     "grilling": {
       "source": "frankify-app/skills",
       "sourceType": "github",
       "skillPath": "derived/grilling/SKILL.md",
-      "computedHash": "1ca262bd5043cedbd75fdcaa0dc339680c11d9d382416c2bf48ace0c2b3caa42"
+      "computedHash": "dbdff4d28e18c27f2d09ae28acb8199f5bc5a144ced96008fe343a3e1338c4fb"
     },
     "requesting-code-review": {
       "source": "obra/superpowers",
       "sourceType": "github",
       "skillPath": "skills/requesting-code-review/SKILL.md",
-      "computedHash": "cde520e9118d7e6b74b5ab0123cff2f68d9c07bddb3f82c997753b6126600aed"
+      "computedHash": "2abaeac1de432c76abda0ca7ba618901d2e94f8817b3650f9c523acea2d224f5"
     },
     "tdd": {
       "source": "frankify-app/skills",
@@ -59,7 +59,7 @@
       "source": "frankify-app/skills",
       "sourceType": "github",
       "skillPath": "derived/to-tickets/SKILL.md",
-      "computedHash": "9c58978e2d01e2eacd7616722158b1d1dc409521b1ee1f443420cecb6b2d6cc0"
+      "computedHash": "b78fce1077543bb693bc711e6b4fe5ce270702eea12e30fca584d2cb5f73da4e"
     },
     "writing-adrs": {
       "source": "frankify-app/skills",
