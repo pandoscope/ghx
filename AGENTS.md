@@ -1,6 +1,6 @@
 # ghx — Agent Guidelines
 
-Repo: <https://github.com/frankify-app/ghx>
+Repo: <https://github.com/pandoscope/ghx>
 
 ## Project Specifics
 
@@ -9,7 +9,7 @@ Repo: <https://github.com/frankify-app/ghx>
 Ubiquitous language is defined in docs/glossary/. Use
 
 ```bash
-uvx disambiguate==0.3.0 <term>
+uvx disambiguate==0.4.0 <term>
 ```
 
 to get a topologically ordered glossary disambiguating all relevant terms
@@ -18,16 +18,27 @@ to understand the given term.
 Before working on a ticket, run:
 
 ```bash
-uvx disambiguate==0.3.0 --from <ticket-file>
+uvx disambiguate==0.4.0 --from <ticket-file>
 ```
 
 or for GitHub issues:
 
 ```bash
-gh issue view <number> --json body -q .body | uvx disambiguate==0.3.0 --from -
+gh issue view <number> --json body -q .body | uvx disambiguate==0.4.0 --from -
 ```
 
 to resolve all referenced terms at once.
+
+Prose that names a term without linking it, or uses an avoided spelling,
+is drift. The `disambiguate --drift` hook reports it on every commit.
+`.drift-baseline.json` lists the findings this repo carried when the hook
+arrived; a new finding fails, and a fixed one fails until
+
+```bash
+uvx disambiguate==0.4.0 --drift --write-baseline
+```
+
+shrinks the file and the shrink is committed.
 
 ### Architecture
 
@@ -130,10 +141,20 @@ Code-specific skills:
 
 ## Git
 
-- Branch: `<agent>/<issue-number>-<desc>` (e.g. `hermes/42-fix-auth`, `claude/42-fix-auth`)
+- Branch: `<agent>/<code><ticket>[-<code><ticket>…]-<desc>` (e.g. `claude/42-fix-auth`, `claude/sk162-session-probe`) — the lowercase repo shortcode is optional per token and expresses a cross-repo arc (same branch name in every repo the arc touches); every token's ticket number must be referenced in the PR body
 - Never push to `main`
 - Create PR immediately on branch creation
 - Commits: conventional commits
+- **Merge commits only on `main`** — feature branches rebase onto
+  `main`, never merge it in; the `commitlint` job rejects `Merge`
+  headers on PR commits.
+- **A fix to this branch's own commits is a `fixup!`**
+  (`git commit --fixup <sha>`), never a standalone `fix:`/`refactor:`
+  commit — fold before merge with
+  `GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash`. The commitlint
+  gate stays red while a `fixup!` exists: that is the fold reminder,
+  not a failure to route around. Standalone `fix:` commits are for
+  defects that already exist on `main`.
 - **Ticket references in PR bodies are ALL CAPS, from the central list**
   (`.github/reference-keywords.json`, enforced by the `ticket` job):
   `CLOSES #n` / `FIXES #n` close on merge,
@@ -142,13 +163,13 @@ Code-specific skills:
   (close, closes, closed, fix, fixes, fixed, resolve, resolves, resolved) in any other casing fails
   the gate — the forge would act on it whether or not the gate
   recognized the reference. Every ticket number in a
-  `claude/(\d+(?:-\d+)*)-` branch must appear as a canonical
+  `claude/((?:[a-z][a-z0-9]*?)?\d+(?:-(?:[a-z][a-z0-9]*?)?\d+)*)-` branch must appear as a canonical
   reference in the body.
-- **Answer every review comment with a full commit URL or `No commit: <why>`**
-  (enforced by the `review-answers` job): the commit URL must be a real
-  commit on the PR — verify with `git rev-parse` before pasting, never
-  expand a short hash from memory — and resolving a thread is not
-  answering it.
+- **Answer every review comment by naming the fixing commit or `No commit: <why>`**
+  (enforced by the `review-answers` job): the commit — as a URL or a
+  sha of seven or more hex digits — must be a real commit on the PR;
+  verify with `git rev-parse` before pasting, never expand a short hash
+  from memory, and resolving a thread is not answering it.
 - Document unexpected encounters and design decisions in commit message as well as PR/Issue
 - **A push rejected over a commit you did not write is rebased around, never forced.**
   Branch rules re-evaluate every commit an update spans, not just the new ones,
@@ -276,6 +297,9 @@ The modes below are the kinds of work the user will ask for. **Each runs in its 
   - Any obstacles that diverged from the initial plan, and — in the rare event spec deviation was unavoidable — what deviated and why.
   - All `DECISION:` markers present in the diff, rendered per the `documenting-decisions` skill format.
 - Check CI → `gh run list` / `gh run view` (or `gh pr checks` once the PR exists).
+  Judge CI by the **newest check run per check name**, not per workflow run:
+  a head commit can accumulate several runs of the same check (re-runs, retriggers),
+  and a stale red run coexisting with a newer green one is a pass, not a failure.
 - If CI fails, fix it by re-entering this **Implement** workflow.
 
 #### Review
@@ -313,3 +337,5 @@ When something fails that automation or an instruction could have prevented — 
 ## Project Conventions
 
 Repo-specific rules live in [docs/conventions.md](docs/conventions.md). Copier seeds that file once and never overwrites it — put rich local conventions there, not in this template-owned file.
+
+Repo-specific session bootstrap — tools a fresh session needs that the template does not install — lives in `scripts/session-start.local.sh`, seeded the same way. The stamped `.claude/settings.json` runs it after its own SessionStart hooks; that settings file is template-owned and never edited locally.
