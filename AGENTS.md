@@ -1,6 +1,6 @@
 # ghx — Agent Guidelines
 
-Repo: <https://github.com/frankify-app/ghx>
+Repo: <https://github.com/pandoscope/ghx>
 
 ## Project Specifics
 
