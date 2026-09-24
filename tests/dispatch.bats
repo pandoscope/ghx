@@ -6,7 +6,7 @@ load test_helper
 setup() { common_setup; }
 
 @test "github remote forwards implemented verb to gh with identical args" {
-    make_repo "https://github.com/frankify-app/ghx.git"
+    make_repo "https://github.com/pandoscope/ghx.git"
     make_mock_gh
     export MOCK_GH_STDOUT="issue list output"
     run "$GHX" issue list
@@ -17,7 +17,7 @@ list" ]
 }
 
 @test "github backend passes gh's exit code through" {
-    make_repo "git@github.com:frankify-app/ghx.git"
+    make_repo "git@github.com:pandoscope/ghx.git"
     make_mock_gh
     export MOCK_GH_EXIT=7
     run "$GHX" issue list
@@ -25,7 +25,7 @@ list" ]
 }
 
 @test "routed invocation logs backend, verb and decision" {
-    make_repo "https://github.com/frankify-app/ghx.git"
+    make_repo "https://github.com/pandoscope/ghx.git"
     make_mock_gh
     run "$GHX" issue list
     local line
